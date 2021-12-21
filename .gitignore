@@ -1,3 +1,4 @@
 /src/*.xml
 /sheet_music/*
+/src/__*
 .DS_Store

@@ -1,9 +1,7 @@
 from camReader import CamReader
-import cv2
-import time
+import cv2, time, os
 import numpy as np
 from pynput.mouse import Button, Controller
-import os 
 
 class CamHandler:
     def __init__(self, fps, frameWidth, frameHeight):
@@ -40,7 +38,12 @@ class CamHandler:
 
     def drawNoFaceText(self):
         cv2.putText(self.cam.frame, "Could not detect face", (2, 10), self.font, 0.5,
-                    (255, 0, 255), 1, cv2.LINE_AA)
+                    (0, 0, 255), 1, cv2.LINE_AA)
+
+    def drawCalibrateText(self, txt):
+        cv2.putText(self.cam.frame, txt, (10, 30), self.font, 0.5,
+                    (255, 0, 0), 1, cv2.LINE_AA)
+
 
     def drawRadius(self):
         x, y, w, h = self.center[0]
@@ -55,6 +58,7 @@ class CamHandler:
                 self.prevTime = time.time()
                 try:
                     self.drawFace()
+                    self.drawCalibrateText("press 'o' to calibrate center")
                 except:
                     self.drawNoFaceText()
                 self.cam.displayFrame()
@@ -73,6 +77,7 @@ class CamHandler:
                 try: 
                     self.drawFace()
                     self.drawCenterLine((0, 255, 0))
+                    self.drawCalibrateText("press 'o' to calibrate max radius")
                 except:
                     self.drawNoFaceText()
                 self.cam.displayFrame()
